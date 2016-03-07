@@ -6,6 +6,13 @@
 package win7calcclone;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -13,15 +20,25 @@ import java.awt.Font;
  */
 public class MainWindow extends javax.swing.JFrame {
     private NumberStorage numStorage;
+    private MathProcessor mathProc;
     
-    public MainWindow(NumberStorage numStorage) {
+    public MainWindow(NumberStorage numStorage, MathProcessor mathProc) {
         this.numStorage = numStorage;
+        this.mathProc = mathProc;
         initComponents();
         getContentPane().setBackground(getBackground());
         UpdateDisplay();
+        InitHotkeys();
     }
     
     public final void UpdateDisplay() {
+        UpdateDisplay(true);
+    }
+    
+    public final void UpdateDisplay(boolean unlockArithmetic) {
+        if(unlockArithmetic) {
+            mathProc.UnlockArithmetic();
+        }
         String displayNumber = numStorage.GetDisplayNumber();
         if(displayNumber.length() > 12) {
             jLabelNumber.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -30,8 +47,179 @@ public class MainWindow extends javax.swing.JFrame {
         }
         jLabelNumber.setText(displayNumber);
         jLabelMemory.setText(numStorage.HasValueInMemory() ? "M" : "");
+        jLabelExpression.setText(mathProc.GetExpression());
     }
     
+    private void InitHotkeys() {
+        InputMap inputMap = jButtonNum1.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_1, "Num1");
+        KeyStroke num_key_1 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_1, "Num1");
+        jButtonNum1.getActionMap().put("Num1", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum1ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum2.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_2, "Num2");
+        KeyStroke num_key_2 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_2, "Num2");
+        jButtonNum2.getActionMap().put("Num2", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum2ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum3.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_3, "Num3");
+        KeyStroke num_key_3 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_3, "Num3");
+        jButtonNum3.getActionMap().put("Num3", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum3ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum4.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_4, "Num4");
+        KeyStroke num_key_4 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_4, "Num4");
+        jButtonNum4.getActionMap().put("Num4", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum4ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum5.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_5, "Num5");
+        KeyStroke num_key_5 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD5, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_5, "Num5");
+        jButtonNum5.getActionMap().put("Num5", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum5ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum6.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_6, "Num6");
+        KeyStroke num_key_6 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_6, "Num6");
+        jButtonNum6.getActionMap().put("Num6", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum6ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum7.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_7 = KeyStroke.getKeyStroke(KeyEvent.VK_7, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_7, "Num7");
+        KeyStroke num_key_7 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_7, "Num7");
+        jButtonNum7.getActionMap().put("Num7", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum7ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum8.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_8 = KeyStroke.getKeyStroke(KeyEvent.VK_8, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_8, "Num8");
+        KeyStroke num_key_8 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_8, "Num8");
+        jButtonNum8.getActionMap().put("Num8", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum8ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum9.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_9, "Num9");
+        KeyStroke num_key_9 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_9, "Num9");
+        jButtonNum9.getActionMap().put("Num9", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum9ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonNum0.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_0, "Num0");
+        KeyStroke num_key_0 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_0, "Num0");
+        jButtonNum0.getActionMap().put("Num0", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonNum0ActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonPoint.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke num_key_point = KeyStroke.getKeyStroke(KeyEvent.VK_DECIMAL, 0);//1 -> shift, 2 -> control
+        inputMap.put(num_key_point, "Point");
+        KeyStroke key_point = KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_point, "Point");
+        jButtonPoint.getActionMap().put("Point", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonPointActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonPlus.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_plus = KeyStroke.getKeyStroke(KeyEvent.VK_ADD, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_plus, "Plus");
+        jButtonPlus.getActionMap().put("Plus", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonPlusActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonMinus.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_minus = KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_minus, "Minus");
+        jButtonMinus.getActionMap().put("Minus", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonMinusActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonDivision.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_divide = KeyStroke.getKeyStroke(KeyEvent.VK_DIVIDE, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_divide, "Divide");
+        jButtonDivision.getActionMap().put("Divide", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonDivisionActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonMultiplication.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_multiply = KeyStroke.getKeyStroke(KeyEvent.VK_MULTIPLY, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_multiply, "Multiply");
+        jButtonMultiplication.getActionMap().put("Multiply", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonMultiplicationActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonCalculate.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_enter, "Enter");
+        //KeyStroke num_key_0 = KeyStroke.getKeyStroke(KeyEvent.VK_e, 0);//1 -> shift, 2 -> control
+        //inputMap.put(num_key_0, "Num0");
+        jButtonCalculate.getActionMap().put("Enter", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonCalculateActionPerformed(ae);
+            }
+        });
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -133,6 +321,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMR.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jButtonMR.setText("MR");
         jButtonMR.setBorder(null);
+        jButtonMR.setFocusPainted(false);
         jButtonMR.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMR.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMR.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -146,6 +335,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMC.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jButtonMC.setText("MC");
         jButtonMC.setBorder(null);
+        jButtonMC.setFocusPainted(false);
         jButtonMC.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMC.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMC.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -159,6 +349,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMS.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jButtonMS.setText("MS");
         jButtonMS.setBorder(null);
+        jButtonMS.setFocusPainted(false);
         jButtonMS.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMS.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMS.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -172,6 +363,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMPlus.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jButtonMPlus.setText("M+");
         jButtonMPlus.setBorder(null);
+        jButtonMPlus.setFocusPainted(false);
         jButtonMPlus.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMPlus.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMPlus.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -185,6 +377,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMMinus.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jButtonMMinus.setText("M-");
         jButtonMMinus.setBorder(null);
+        jButtonMMinus.setFocusPainted(false);
         jButtonMMinus.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMMinus.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMMinus.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -199,6 +392,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonBackspace.setText("←");
         jButtonBackspace.setAutoscrolls(true);
         jButtonBackspace.setBorder(null);
+        jButtonBackspace.setFocusPainted(false);
         jButtonBackspace.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonBackspace.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonBackspace.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -213,6 +407,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum7.setText("7");
         jButtonNum7.setBorder(null);
+        jButtonNum7.setFocusPainted(false);
         jButtonNum7.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum7.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum7.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -226,6 +421,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum1.setText("1");
         jButtonNum1.setBorder(null);
+        jButtonNum1.setFocusPainted(false);
         jButtonNum1.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum1.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum1.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -239,6 +435,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum4.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum4.setText("4");
         jButtonNum4.setBorder(null);
+        jButtonNum4.setFocusPainted(false);
         jButtonNum4.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum4.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum4.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -252,6 +449,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum0.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum0.setText("0");
         jButtonNum0.setBorder(null);
+        jButtonNum0.setFocusPainted(false);
         jButtonNum0.setMaximumSize(new java.awt.Dimension(70, 27));
         jButtonNum0.setMinimumSize(new java.awt.Dimension(70, 27));
         jButtonNum0.setPreferredSize(new java.awt.Dimension(70, 27));
@@ -265,6 +463,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum2.setText("2");
         jButtonNum2.setBorder(null);
+        jButtonNum2.setFocusPainted(false);
         jButtonNum2.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum2.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum2.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -278,6 +477,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum5.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum5.setText("5");
         jButtonNum5.setBorder(null);
+        jButtonNum5.setFocusPainted(false);
         jButtonNum5.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum5.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum5.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -291,6 +491,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum8.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum8.setText("8");
         jButtonNum8.setBorder(null);
+        jButtonNum8.setFocusPainted(false);
         jButtonNum8.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum8.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum8.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -304,6 +505,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum3.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum3.setText("3");
         jButtonNum3.setBorder(null);
+        jButtonNum3.setFocusPainted(false);
         jButtonNum3.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum3.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum3.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -317,6 +519,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum6.setText("6");
         jButtonNum6.setBorder(null);
+        jButtonNum6.setFocusPainted(false);
         jButtonNum6.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum6.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum6.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -330,6 +533,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum9.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonNum9.setText("9");
         jButtonNum9.setBorder(null);
+        jButtonNum9.setFocusPainted(false);
         jButtonNum9.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum9.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum9.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -344,6 +548,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonC.setText("C");
         jButtonC.setAutoscrolls(true);
         jButtonC.setBorder(null);
+        jButtonC.setFocusPainted(false);
         jButtonC.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonC.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonC.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -358,6 +563,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonCE.setText("CE");
         jButtonCE.setAutoscrolls(true);
         jButtonCE.setBorder(null);
+        jButtonCE.setFocusPainted(false);
         jButtonCE.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonCE.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonCE.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -372,6 +578,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonSquareRoot.setText("√");
         jButtonSquareRoot.setAutoscrolls(true);
         jButtonSquareRoot.setBorder(null);
+        jButtonSquareRoot.setFocusPainted(false);
         jButtonSquareRoot.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonSquareRoot.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonSquareRoot.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -381,6 +588,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonInvertSign.setText("±");
         jButtonInvertSign.setAutoscrolls(true);
         jButtonInvertSign.setBorder(null);
+        jButtonInvertSign.setFocusPainted(false);
         jButtonInvertSign.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonInvertSign.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonInvertSign.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -389,6 +597,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonPoint.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jButtonPoint.setText(".");
         jButtonPoint.setBorder(null);
+        jButtonPoint.setFocusPainted(false);
         jButtonPoint.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonPoint.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonPoint.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -403,15 +612,22 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonDivision.setText("/");
         jButtonDivision.setAutoscrolls(true);
         jButtonDivision.setBorder(null);
+        jButtonDivision.setFocusPainted(false);
         jButtonDivision.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonDivision.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonDivision.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonDivision.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDivisionActionPerformed(evt);
+            }
+        });
 
         jButtonPercent.setBackground(new java.awt.Color(180, 214, 249));
         jButtonPercent.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButtonPercent.setText("%");
         jButtonPercent.setAutoscrolls(true);
         jButtonPercent.setBorder(null);
+        jButtonPercent.setFocusPainted(false);
         jButtonPercent.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonPercent.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonPercent.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -421,16 +637,23 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMultiplication.setText("*");
         jButtonMultiplication.setAutoscrolls(true);
         jButtonMultiplication.setBorder(null);
+        jButtonMultiplication.setFocusPainted(false);
         jButtonMultiplication.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMultiplication.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMultiplication.setPreferredSize(new java.awt.Dimension(33, 27));
         jButtonMultiplication.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jButtonMultiplication.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMultiplicationActionPerformed(evt);
+            }
+        });
 
         jButtonReciprocating.setBackground(new java.awt.Color(180, 214, 249));
         jButtonReciprocating.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButtonReciprocating.setText("<html>1/<i>x</i></html>");
         jButtonReciprocating.setAutoscrolls(true);
         jButtonReciprocating.setBorder(null);
+        jButtonReciprocating.setFocusPainted(false);
         jButtonReciprocating.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonReciprocating.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonReciprocating.setPreferredSize(new java.awt.Dimension(33, 27));
@@ -440,27 +663,45 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMinus.setText("-");
         jButtonMinus.setAutoscrolls(true);
         jButtonMinus.setBorder(null);
+        jButtonMinus.setFocusPainted(false);
         jButtonMinus.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMinus.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMinus.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonMinus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMinusActionPerformed(evt);
+            }
+        });
 
         jButtonPlus.setBackground(new java.awt.Color(180, 214, 249));
         jButtonPlus.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButtonPlus.setText("+");
         jButtonPlus.setAutoscrolls(true);
         jButtonPlus.setBorder(null);
+        jButtonPlus.setFocusPainted(false);
         jButtonPlus.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonPlus.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonPlus.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonPlus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPlusActionPerformed(evt);
+            }
+        });
 
         jButtonCalculate.setBackground(new java.awt.Color(180, 214, 249));
         jButtonCalculate.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jButtonCalculate.setText("=");
         jButtonCalculate.setAutoscrolls(true);
         jButtonCalculate.setBorder(null);
+        jButtonCalculate.setFocusPainted(false);
         jButtonCalculate.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonCalculate.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonCalculate.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonCalculate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCalculateActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("View");
         jMenuBar.add(jMenu1);
@@ -680,7 +921,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCEActionPerformed
 
     private void jButtonCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCActionPerformed
-        numStorage.Clear();
+        mathProc.Clear();
+        numStorage.ClearEntry();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonCActionPerformed
 
@@ -708,6 +950,36 @@ public class MainWindow extends javax.swing.JFrame {
         numStorage.MemorySubtract();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonMMinusActionPerformed
+
+    private void jButtonCalculateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalculateActionPerformed
+        String value = mathProc.Calculate(numStorage.GetNumber());
+        numStorage.SetDisplay(value);
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonCalculateActionPerformed
+
+    private void jButtonPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlusActionPerformed
+        String value = mathProc.Add(numStorage.GetNumber());
+        numStorage.SetDisplay(value);
+        UpdateDisplay(false);
+    }//GEN-LAST:event_jButtonPlusActionPerformed
+
+    private void jButtonMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMinusActionPerformed
+        String value = mathProc.Subtract(numStorage.GetNumber());
+        numStorage.SetDisplay(value);
+        UpdateDisplay(false);
+    }//GEN-LAST:event_jButtonMinusActionPerformed
+
+    private void jButtonMultiplicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMultiplicationActionPerformed
+        String value = mathProc.Multiply(numStorage.GetNumber());
+        numStorage.SetDisplay(value);
+        UpdateDisplay(false);
+    }//GEN-LAST:event_jButtonMultiplicationActionPerformed
+
+    private void jButtonDivisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDivisionActionPerformed
+        String value = mathProc.Divide(numStorage.GetNumber());
+        numStorage.SetDisplay(value);
+        UpdateDisplay(false);
+    }//GEN-LAST:event_jButtonDivisionActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBackspace;

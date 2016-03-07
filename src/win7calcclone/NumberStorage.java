@@ -3,32 +3,32 @@ package win7calcclone;
 import java.text.DecimalFormat;
 
 public class NumberStorage {
-    private static final char ZERO_SYMBOL = '0';
-    private static final int DISPLAY_CAPACITY = 16;
-    private double memory;
-    private StringBuilder display;
-    private DecimalFormat dFormat;
-    
+    public static final DecimalFormat NumberFormat = new DecimalFormat("0.###############");
+    protected static final char ZERO_SYMBOL = '0';
+    protected static final int DISPLAY_CAPACITY = 16;
+    protected double memory;
+    protected StringBuilder display;
+    protected boolean displaySet;
+        
     public NumberStorage() {
         display = new StringBuilder(DISPLAY_CAPACITY);
-        dFormat = new DecimalFormat("0.####");
+        displaySet = false;
         MemoryClear();
-        Clear();
+        ClearEntry();
     }
     
     public boolean HasValueInMemory() {
         return memory != 0;
     }
     
-    //The left arrow - clears only last entered symbol
-    public void Backspace() {
-        display.deleteCharAt(display.length() - 1);
-    }
-    
-    //C - clears everything
-    public void Clear() {
-        //TODO: clear expressions
-        ClearEntry();
+    //The left arrow - clears only last entered symbol.
+    //@return false if backspace failed because number was set by calculator recently
+    public boolean Backspace() {
+        if(!displaySet) {
+            display.deleteCharAt(display.length() - 1);
+            return true;
+        }
+        return false;
     }
     
     //CE - clears only the recent entry
@@ -45,7 +45,7 @@ public class NumberStorage {
     public void MemoryRecall() {
         ClearEntry();
         if(HasValueInMemory()) {
-            display.append(dFormat.format(memory));    
+            display.append(NumberFormat.format(memory));    
         }
     }
     
@@ -75,7 +75,21 @@ public class NumberStorage {
         return Double.parseDouble(GetDisplayNumber());
     }
     
+    public void SetDisplay(String value) {
+        ClearEntry();
+        try {
+            display.append(NumberFormat.format(Double.parseDouble(value)));
+        } catch(NumberFormatException e) { //then it's an error message
+            display.append(value);
+        }
+        displaySet = true;
+    }
+    
     public void AddSymbol(char symbol) {
+        if(displaySet) {
+            ClearEntry();
+            displaySet = false;
+        }
         if(display.length() == DISPLAY_CAPACITY) {
             return;
         }
