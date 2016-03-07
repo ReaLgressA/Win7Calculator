@@ -10,14 +10,16 @@ package win7calcclone;
  * @author ReaLgressA
  */
 public class Calc {
-
-    /**
-     * @param args the command line arguments
-     */
+    private NumberStorage numStorage;
+    
+    public Calc() {
+        numStorage = new NumberStorage();
+        MainWindow w = new MainWindow(numStorage);
+        w.setVisible(true); 
+    }
+    
     public static void main(String[] args) {
-        // TODO code application logic here
-        MainWindow w = new MainWindow();
-        w.setVisible(true);
+        Calc calc = new Calc();
     }
     
 }

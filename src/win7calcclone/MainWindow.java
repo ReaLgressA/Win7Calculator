@@ -5,20 +5,33 @@
  */
 package win7calcclone;
 
+import java.awt.Font;
+
 /**
  *
  * @author ReaLgressA
  */
 public class MainWindow extends javax.swing.JFrame {
-
-    /**
-     * Creates new form MainWindow
-     */
-    public MainWindow() {
+    private NumberStorage numStorage;
+    
+    public MainWindow(NumberStorage numStorage) {
+        this.numStorage = numStorage;
         initComponents();
         getContentPane().setBackground(getBackground());
+        UpdateDisplay();
     }
-
+    
+    public final void UpdateDisplay() {
+        String displayNumber = numStorage.GetDisplayNumber();
+        if(displayNumber.length() > 12) {
+            jLabelNumber.setFont(new Font("Serif", Font.PLAIN, 18));
+        } else {
+            jLabelNumber.setFont(new Font("Serif", Font.PLAIN, 22));
+        }
+        jLabelNumber.setText(displayNumber);
+        jLabelMemory.setText(numStorage.HasValueInMemory() ? "M" : "");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,6 +44,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanelCalc = new javax.swing.JPanel();
         jLabelExpression = new javax.swing.JLabel();
         jLabelNumber = new javax.swing.JLabel();
+        jLabelMemory = new javax.swing.JLabel();
         jButtonMR = new javax.swing.JButton();
         jButtonMC = new javax.swing.JButton();
         jButtonMS = new javax.swing.JButton();
@@ -89,19 +103,30 @@ public class MainWindow extends javax.swing.JFrame {
         jLabelNumber.setText("3072");
         jLabelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
+        jLabelMemory.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabelMemory.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelMemory.setText("M");
+        jLabelMemory.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabelMemory.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanelCalcLayout = new javax.swing.GroupLayout(jPanelCalc);
         jPanelCalc.setLayout(jPanelCalcLayout);
         jPanelCalcLayout.setHorizontalGroup(
             jPanelCalcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelExpression, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-            .addComponent(jLabelNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanelCalcLayout.createSequentialGroup()
+                .addComponent(jLabelMemory, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabelExpression, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelCalcLayout.setVerticalGroup(
             jPanelCalcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCalcLayout.createSequentialGroup()
                 .addComponent(jLabelExpression, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelCalcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelMemory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         jButtonMR.setBackground(new java.awt.Color(169, 198, 255));
@@ -111,6 +136,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMR.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMR.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMR.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonMR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMRActionPerformed(evt);
+            }
+        });
 
         jButtonMC.setBackground(new java.awt.Color(169, 198, 255));
         jButtonMC.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -119,6 +149,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMC.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMC.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMC.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonMC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMCActionPerformed(evt);
+            }
+        });
 
         jButtonMS.setBackground(new java.awt.Color(169, 198, 255));
         jButtonMS.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -127,6 +162,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMS.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMS.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMS.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonMS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMSActionPerformed(evt);
+            }
+        });
 
         jButtonMPlus.setBackground(new java.awt.Color(169, 198, 255));
         jButtonMPlus.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -135,6 +175,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMPlus.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMPlus.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMPlus.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonMPlus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMPlusActionPerformed(evt);
+            }
+        });
 
         jButtonMMinus.setBackground(new java.awt.Color(169, 198, 255));
         jButtonMMinus.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -143,6 +188,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonMMinus.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonMMinus.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonMMinus.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonMMinus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMMinusActionPerformed(evt);
+            }
+        });
 
         jButtonBackspace.setBackground(new java.awt.Color(180, 214, 249));
         jButtonBackspace.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
@@ -153,6 +203,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonBackspace.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonBackspace.setPreferredSize(new java.awt.Dimension(33, 27));
         jButtonBackspace.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jButtonBackspace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackspaceActionPerformed(evt);
+            }
+        });
 
         jButtonNum7.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -161,6 +216,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum7.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum7.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum7.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum7ActionPerformed(evt);
+            }
+        });
 
         jButtonNum1.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -169,6 +229,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum1.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum1.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum1.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum1ActionPerformed(evt);
+            }
+        });
 
         jButtonNum4.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum4.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -177,6 +242,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum4.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum4.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum4.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum4ActionPerformed(evt);
+            }
+        });
 
         jButtonNum0.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum0.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -185,6 +255,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum0.setMaximumSize(new java.awt.Dimension(70, 27));
         jButtonNum0.setMinimumSize(new java.awt.Dimension(70, 27));
         jButtonNum0.setPreferredSize(new java.awt.Dimension(70, 27));
+        jButtonNum0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum0ActionPerformed(evt);
+            }
+        });
 
         jButtonNum2.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -193,6 +268,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum2.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum2.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum2.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum2ActionPerformed(evt);
+            }
+        });
 
         jButtonNum5.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum5.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -201,6 +281,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum5.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum5.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum5.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum5ActionPerformed(evt);
+            }
+        });
 
         jButtonNum8.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum8.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -209,6 +294,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum8.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum8.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum8.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum8ActionPerformed(evt);
+            }
+        });
 
         jButtonNum3.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum3.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -217,6 +307,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum3.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum3.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum3.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum3ActionPerformed(evt);
+            }
+        });
 
         jButtonNum6.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -225,6 +320,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum6.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum6.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum6.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum6ActionPerformed(evt);
+            }
+        });
 
         jButtonNum9.setBackground(new java.awt.Color(255, 255, 255));
         jButtonNum9.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -233,6 +333,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonNum9.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonNum9.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonNum9.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonNum9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNum9ActionPerformed(evt);
+            }
+        });
 
         jButtonC.setBackground(new java.awt.Color(180, 214, 249));
         jButtonC.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -242,6 +347,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonC.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonC.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonC.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCActionPerformed(evt);
+            }
+        });
 
         jButtonCE.setBackground(new java.awt.Color(180, 214, 249));
         jButtonCE.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -251,6 +361,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonCE.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonCE.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonCE.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonCE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCEActionPerformed(evt);
+            }
+        });
 
         jButtonSquareRoot.setBackground(new java.awt.Color(180, 214, 249));
         jButtonSquareRoot.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -277,6 +392,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonPoint.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonPoint.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonPoint.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPointActionPerformed(evt);
+            }
+        });
 
         jButtonDivision.setBackground(new java.awt.Color(180, 214, 249));
         jButtonDivision.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -360,71 +480,75 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelCalc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanelCalc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonMC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonMR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonBackspace, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonCE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonMS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonMPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonMMinus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonInvertSign, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonSquareRoot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButtonNum0, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonNum7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonNum1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonNum4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonNum8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonNum2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonNum5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonNum9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonDivision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonPercent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonNum6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonMultiplication, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonReciprocating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButtonNum3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonMC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonMinus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jButtonMR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButtonPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonBackspace, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jButtonCE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonCalculate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 21, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonMS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonMPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonMMinus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButtonInvertSign, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonSquareRoot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jButtonNum0, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButtonNum7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonNum1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonNum4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButtonNum8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonNum2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonNum5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonNum9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonDivision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonPercent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonNum6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonMultiplication, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonReciprocating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jButtonNum3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButtonMinus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jButtonPoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButtonPlus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonCalculate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 21, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -490,40 +614,100 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jButtonNum1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum1ActionPerformed
+        numStorage.AddSymbol('1');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainWindow().setVisible(true);
-            }
-        });
-    }
+    private void jButtonNum2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum2ActionPerformed
+        numStorage.AddSymbol('2');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum2ActionPerformed
+
+    private void jButtonNum3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum3ActionPerformed
+        numStorage.AddSymbol('3');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum3ActionPerformed
+
+    private void jButtonNum4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum4ActionPerformed
+        numStorage.AddSymbol('4');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum4ActionPerformed
+
+    private void jButtonNum5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum5ActionPerformed
+        numStorage.AddSymbol('5');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum5ActionPerformed
+
+    private void jButtonNum6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum6ActionPerformed
+        numStorage.AddSymbol('6');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum6ActionPerformed
+
+    private void jButtonNum7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum7ActionPerformed
+        numStorage.AddSymbol('7');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum7ActionPerformed
+
+    private void jButtonNum8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum8ActionPerformed
+        numStorage.AddSymbol('8');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum8ActionPerformed
+
+    private void jButtonNum9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum9ActionPerformed
+        numStorage.AddSymbol('9');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum9ActionPerformed
+
+    private void jButtonNum0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum0ActionPerformed
+        numStorage.AddSymbol('0');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonNum0ActionPerformed
+
+    private void jButtonPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPointActionPerformed
+        numStorage.AddSymbol('.');
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonPointActionPerformed
+
+    private void jButtonBackspaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackspaceActionPerformed
+        numStorage.Backspace();
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonBackspaceActionPerformed
+
+    private void jButtonCEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCEActionPerformed
+        numStorage.ClearEntry();
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonCEActionPerformed
+
+    private void jButtonCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCActionPerformed
+        numStorage.Clear();
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonCActionPerformed
+
+    private void jButtonMCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMCActionPerformed
+        numStorage.MemoryClear();
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonMCActionPerformed
+
+    private void jButtonMRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMRActionPerformed
+        numStorage.MemoryRecall();
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonMRActionPerformed
+
+    private void jButtonMSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMSActionPerformed
+        numStorage.MemoryStore();
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonMSActionPerformed
+
+    private void jButtonMPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMPlusActionPerformed
+        numStorage.MemoryAdd();
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonMPlusActionPerformed
+
+    private void jButtonMMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMMinusActionPerformed
+        numStorage.MemorySubtract();
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonMMinusActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBackspace;
@@ -555,6 +739,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton jButtonReciprocating;
     private javax.swing.JButton jButtonSquareRoot;
     private javax.swing.JLabel jLabelExpression;
+    private javax.swing.JLabel jLabelMemory;
     private javax.swing.JLabel jLabelNumber;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
