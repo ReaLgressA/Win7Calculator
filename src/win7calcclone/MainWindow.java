@@ -48,6 +48,7 @@ public class MainWindow extends javax.swing.JFrame {
         jLabelNumber.setText(displayNumber);
         jLabelMemory.setText(numStorage.HasValueInMemory() ? "M" : "");
         jLabelExpression.setText(mathProc.GetExpression());
+        ErrorCheck();
     }
     
     private void InitHotkeys() {
@@ -220,6 +221,15 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
     }
+    
+    protected boolean ErrorCheck() {
+        if(mathProc.IsErrorOccured()) {
+            java.awt.Toolkit.getDefaultToolkit().beep();
+            return true;
+        }
+        return false;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -876,56 +886,89 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonNum1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum1ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('1');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum1ActionPerformed
 
     private void jButtonNum2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum2ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('2');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum2ActionPerformed
 
     private void jButtonNum3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum3ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('3');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum3ActionPerformed
 
     private void jButtonNum4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum4ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('4');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum4ActionPerformed
 
     private void jButtonNum5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum5ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('5');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum5ActionPerformed
 
     private void jButtonNum6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum6ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('6');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum6ActionPerformed
 
     private void jButtonNum7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum7ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('7');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum7ActionPerformed
 
     private void jButtonNum8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum8ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('8');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum8ActionPerformed
 
     private void jButtonNum9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum9ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('9');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum9ActionPerformed
 
     private void jButtonNum0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNum0ActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('0');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonNum0ActionPerformed
 
     private void jButtonPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPointActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.AddSymbol('.');
         UpdateDisplay();
     }//GEN-LAST:event_jButtonPointActionPerformed
@@ -936,6 +979,10 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackspaceActionPerformed
 
     private void jButtonCEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCEActionPerformed
+        if(mathProc.IsErrorOccured()) {
+            jButtonCActionPerformed(evt);
+            return;
+        }
         numStorage.ClearEntry();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonCEActionPerformed
@@ -947,81 +994,112 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCActionPerformed
 
     private void jButtonMCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMCActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.MemoryClear();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonMCActionPerformed
 
     private void jButtonMRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMRActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.MemoryRecall();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonMRActionPerformed
 
     private void jButtonMSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMSActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.MemoryStore();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonMSActionPerformed
 
     private void jButtonMPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMPlusActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.MemoryAdd();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonMPlusActionPerformed
 
     private void jButtonMMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMMinusActionPerformed
+        if(ErrorCheck()) {
+            return;
+        }
         numStorage.MemorySubtract();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonMMinusActionPerformed
 
     private void jButtonCalculateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalculateActionPerformed
-        String value = mathProc.Calculate(numStorage.GetNumber());
-        numStorage.SetDisplay(value);
-        UpdateDisplay();
+        if(ErrorCheck()) {
+            return;
+        }
+        numStorage.SetDisplay(mathProc.Calculate(numStorage.GetNumber()));
+        UpdateDisplay();        
     }//GEN-LAST:event_jButtonCalculateActionPerformed
 
     private void jButtonPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlusActionPerformed
-        String value = mathProc.Add(numStorage.GetNumber());
-        numStorage.SetDisplay(value);
+        if(ErrorCheck()) {
+            return;
+        }
+        numStorage.SetDisplay(mathProc.Add(numStorage.GetNumber()));
         UpdateDisplay(false);
     }//GEN-LAST:event_jButtonPlusActionPerformed
 
     private void jButtonMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMinusActionPerformed
-        String value = mathProc.Subtract(numStorage.GetNumber());
-        numStorage.SetDisplay(value);
+        if(ErrorCheck()) {
+            return;
+        }
+        numStorage.SetDisplay(mathProc.Subtract(numStorage.GetNumber()));
         UpdateDisplay(false);
     }//GEN-LAST:event_jButtonMinusActionPerformed
 
     private void jButtonMultiplicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMultiplicationActionPerformed
-        String value = mathProc.Multiply(numStorage.GetNumber());
-        numStorage.SetDisplay(value);
+        if(ErrorCheck()) {
+            return;
+        }
+        numStorage.SetDisplay(mathProc.Multiply(numStorage.GetNumber()));
         UpdateDisplay(false);
     }//GEN-LAST:event_jButtonMultiplicationActionPerformed
 
     private void jButtonDivisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDivisionActionPerformed
-        String value = mathProc.Divide(numStorage.GetNumber());
-        numStorage.SetDisplay(value);
+        if(ErrorCheck()) {
+            return;
+        }
+        numStorage.SetDisplay(mathProc.Divide(numStorage.GetNumber()));
         UpdateDisplay(false);
     }//GEN-LAST:event_jButtonDivisionActionPerformed
 
     private void jButtonInvertSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInvertSignActionPerformed
-        String value = mathProc.Negate(numStorage.GetNumber());
-        numStorage.SetDisplay(value);
+        if(ErrorCheck()) {
+            return;
+        }
+        numStorage.SetDisplay(mathProc.Negate(numStorage.GetNumber()));
         UpdateDisplay();
     }//GEN-LAST:event_jButtonInvertSignActionPerformed
 
     private void jButtonSquareRootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSquareRootActionPerformed
-        String value = mathProc.Sqrt(numStorage.GetNumber());
-        numStorage.SetDisplay(value);
+        
+        numStorage.SetDisplay(mathProc.Sqrt(numStorage.GetNumber()));
         UpdateDisplay();
     }//GEN-LAST:event_jButtonSquareRootActionPerformed
 
     private void jButtonReciprocatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReciprocatingActionPerformed
-        String value = mathProc.Reciproc(numStorage.GetNumber());
-        numStorage.SetDisplay(value);
+        if(ErrorCheck()) {
+            return;
+        }
+        numStorage.SetDisplay(mathProc.Reciproc(numStorage.GetNumber()));
         UpdateDisplay();
     }//GEN-LAST:event_jButtonReciprocatingActionPerformed
 
     private void jButtonPercentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPercentActionPerformed
-        String value = mathProc.Percent();
-        numStorage.SetDisplay(value);
+        if(ErrorCheck()) {
+            return;
+        }
+        numStorage.SetDisplay(mathProc.Percent());
         UpdateDisplay();
     }//GEN-LAST:event_jButtonPercentActionPerformed
 

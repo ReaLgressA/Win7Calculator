@@ -24,6 +24,7 @@ public class MathProcessor {
     protected boolean arithmeticLock;//If arithmetic operation used recently - block it until user will do something else. (Also, let user change an arithmetic operator)
     protected boolean unaryLock;
     protected MathExpression lastExp;
+    protected boolean errorState;
     
     public MathProcessor() {
         expressions = new ArrayList<>();
@@ -34,24 +35,31 @@ public class MathProcessor {
         expressions.clear();
         arithmeticLock = false;
         unaryLock = false;
+        errorState = false;
         lastExp = null;
     }
     
+    public boolean IsErrorOccured() {
+        return errorState;
+    }
+    
     protected String ProcessUnaryOperation(double value, UnaryOperatorType type) {
-        if(unaryLock && arithmeticLock) {
-            expressions.get(expressions.size() - 1).unaryOps.add(type);
-            return Precalculate();
-        } else if(arithmeticLock) {
-            expressions.add(new MathExpression(value, type));
-            unaryLock = true;
-            return Precalculate();
-        } else {
-            MathExpression me = new MathExpression(value, type);
-            try {
+        try {
+            if (unaryLock) {
+                MathExpression me = expressions.get(expressions.size() - 1);
+                me.unaryOps.add(type);
                 return NumberStorage.NumberFormat.format(me.GetValue());
-            } catch (IllegalArgumentException ex) {
-                return ex.getMessage();
+            } else if (arithmeticLock) {
+                expressions.add(new MathExpression(value, type));
+                unaryLock = true;
+                return NumberStorage.NumberFormat.format(expressions.get(expressions.size() - 1).GetValue());
+            } else {
+                MathExpression me = new MathExpression(value, type);
+                return NumberStorage.NumberFormat.format(me.GetValue());
             }
+        } catch (IllegalArgumentException ex) {
+            errorState = true;
+            return ex.getMessage();
         }
     }
     
@@ -144,6 +152,7 @@ public class MathProcessor {
             try {
                 result = ProcessBinaryExpression(result, expressions.get(i).GetValue(), expressions.get(i - 1).GetBinaryOperator());
             } catch (IllegalArgumentException ex) {
+                errorState = true;
                 return ex.getMessage();
             }
         }

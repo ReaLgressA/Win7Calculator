@@ -9,7 +9,7 @@ public class NumberStorage {
     protected double memory;
     protected StringBuilder display;
     protected boolean displaySet;
-        
+    
     public NumberStorage() {
         display = new StringBuilder(DISPLAY_CAPACITY);
         displaySet = false;
@@ -51,17 +51,17 @@ public class NumberStorage {
     
     //S stores the number on the display into memory.
     public void MemoryStore() {
-        memory = Double.parseDouble(display.toString());
+        memory = GetNumber();
     }
     
     //M+ adds the number on the display to the number in memory
     public void MemoryAdd() {
-        memory += Double.parseDouble(display.toString());
+        memory += GetNumber();
     }
     
     //M subtracts the number on the display from the number in memory
     public void MemorySubtract() {
-        memory -= Double.parseDouble(display.toString());
+        memory -= GetNumber();
     }
     
     public String GetDisplayNumber() {
