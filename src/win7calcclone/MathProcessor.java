@@ -22,30 +22,50 @@ public class MathProcessor {
 
     protected ArrayList<MathExpression> expressions;
     protected boolean arithmeticLock;//If arithmetic operation used recently - block it until user will do something else. (Also, let user change an arithmetic operator)
+    protected boolean unaryLock;
     protected MathExpression lastExp;
     
     public MathProcessor() {
         expressions = new ArrayList<>();
-        arithmeticLock = false;
-        lastExp = null;
+        Clear();
     }
 
     public void Clear() { 
         expressions.clear();
+        arithmeticLock = false;
+        unaryLock = false;
         lastExp = null;
     }
     
-    public void Negate() {
-
+    protected String ProcessUnaryOperation(double value, UnaryOperatorType type) {
+        if(unaryLock && arithmeticLock) {
+            expressions.get(expressions.size() - 1).unaryOps.add(type);
+            return Precalculate();
+        } else if(arithmeticLock) {
+            expressions.add(new MathExpression(value, type));
+            unaryLock = true;
+            return Precalculate();
+        } else {
+            MathExpression me = new MathExpression(value, type);
+            try {
+                return NumberStorage.NumberFormat.format(me.GetValue());
+            } catch (IllegalArgumentException ex) {
+                return ex.getMessage();
+            }
+        }
+    }
+    
+    public String Negate(double value) {
+        return ProcessUnaryOperation(value, UnaryOperatorType.Negate);
     }
 
-    public void Sqrt() {
-
+    public String Sqrt(double value) {
+        return ProcessUnaryOperation(value, UnaryOperatorType.Sqrt);
     }
 
     // 1 / x
-    public void Reciproc() {
-
+    public String Reciproc(double value) {
+        return ProcessUnaryOperation(value, UnaryOperatorType.Reciproc);
     }
 
     public void UnlockArithmetic() {
@@ -94,7 +114,7 @@ public class MathProcessor {
         return Precalculate();
     }
 
-    protected double ProcessExpression(double arg1, double arg2, BinaryOperatorType binaryOp) {
+    protected double ProcessBinaryExpression(double arg1, double arg2, BinaryOperatorType binaryOp) {
         switch (binaryOp) {
             case Add:
                 arg1 += arg2;
@@ -122,7 +142,7 @@ public class MathProcessor {
         double result = expressions.isEmpty() ? 0 : expressions.get(0).value;
         for (int i = 1; i < expressions.size(); ++i) {
             try {
-                result = ProcessExpression(result, expressions.get(i).GetValue(), expressions.get(i - 1).GetBinaryOperator());
+                result = ProcessBinaryExpression(result, expressions.get(i).GetValue(), expressions.get(i - 1).GetBinaryOperator());
             } catch (IllegalArgumentException ex) {
                 return ex.getMessage();
             }
@@ -132,7 +152,7 @@ public class MathProcessor {
 
     public String Calculate(double displayValue) {
         if(expressions.isEmpty()) {
-            return lastExp == null ? "0" : NumberStorage.NumberFormat.format(ProcessExpression(displayValue, lastExp.GetValue(), lastExp.GetBinaryOperator()));
+            return lastExp == null ? "0" : NumberStorage.NumberFormat.format(ProcessBinaryExpression(displayValue, lastExp.GetValue(), lastExp.GetBinaryOperator()));
         }
         expressions.add(new MathExpression(displayValue, expressions.get(expressions.size() - 1).binaryOp));
         String result = Precalculate();

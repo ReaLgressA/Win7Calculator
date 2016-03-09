@@ -582,6 +582,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonSquareRoot.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonSquareRoot.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonSquareRoot.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonSquareRoot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSquareRootActionPerformed(evt);
+            }
+        });
 
         jButtonInvertSign.setBackground(new java.awt.Color(180, 214, 249));
         jButtonInvertSign.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -592,6 +597,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonInvertSign.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonInvertSign.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonInvertSign.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonInvertSign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInvertSignActionPerformed(evt);
+            }
+        });
 
         jButtonPoint.setBackground(new java.awt.Color(255, 255, 255));
         jButtonPoint.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -631,6 +641,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonPercent.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonPercent.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonPercent.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonPercent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPercentActionPerformed(evt);
+            }
+        });
 
         jButtonMultiplication.setBackground(new java.awt.Color(180, 214, 249));
         jButtonMultiplication.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -657,6 +672,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButtonReciprocating.setMaximumSize(new java.awt.Dimension(33, 27));
         jButtonReciprocating.setMinimumSize(new java.awt.Dimension(33, 27));
         jButtonReciprocating.setPreferredSize(new java.awt.Dimension(33, 27));
+        jButtonReciprocating.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReciprocatingActionPerformed(evt);
+            }
+        });
 
         jButtonMinus.setBackground(new java.awt.Color(180, 214, 249));
         jButtonMinus.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -980,6 +1000,30 @@ public class MainWindow extends javax.swing.JFrame {
         numStorage.SetDisplay(value);
         UpdateDisplay(false);
     }//GEN-LAST:event_jButtonDivisionActionPerformed
+
+    private void jButtonInvertSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInvertSignActionPerformed
+        String value = mathProc.Negate(numStorage.GetNumber());
+        numStorage.SetDisplay(value);
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonInvertSignActionPerformed
+
+    private void jButtonSquareRootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSquareRootActionPerformed
+        String value = mathProc.Sqrt(numStorage.GetNumber());
+        numStorage.SetDisplay(value);
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonSquareRootActionPerformed
+
+    private void jButtonReciprocatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReciprocatingActionPerformed
+        String value = mathProc.Reciproc(numStorage.GetNumber());
+        numStorage.SetDisplay(value);
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonReciprocatingActionPerformed
+
+    private void jButtonPercentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPercentActionPerformed
+        String value = mathProc.Percent();
+        numStorage.SetDisplay(value);
+        UpdateDisplay();
+    }//GEN-LAST:event_jButtonPercentActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBackspace;
