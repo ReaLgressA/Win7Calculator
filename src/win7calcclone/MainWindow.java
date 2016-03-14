@@ -212,12 +212,28 @@ public class MainWindow extends javax.swing.JFrame {
         inputMap = jButtonCalculate.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
         KeyStroke key_enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);//1 -> shift, 2 -> control
         inputMap.put(key_enter, "Enter");
-        //KeyStroke num_key_0 = KeyStroke.getKeyStroke(KeyEvent.VK_e, 0);//1 -> shift, 2 -> control
-        //inputMap.put(num_key_0, "Num0");
         jButtonCalculate.getActionMap().put("Enter", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 jButtonCalculateActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonC.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_del = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_del, "Delete");
+        jButtonC.getActionMap().put("Delete", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonCActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonBackspace.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_backspace = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0);//1 -> shift, 2 -> control
+        inputMap.put(key_backspace, "Backspace");
+        jButtonBackspace.getActionMap().put("Backspace", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonBackspaceActionPerformed(ae);
             }
         });
     }

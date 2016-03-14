@@ -3,12 +3,20 @@ package win7calcclone;
 import java.text.DecimalFormat;
 
 public class NumberStorage {
-    public static final DecimalFormat NumberFormat = new DecimalFormat("0.###############");
+    private static final DecimalFormat NumberFormat = new DecimalFormat("###############.###############");//"0.###############"
+    private static final DecimalFormat ScientificNumberFormat = new DecimalFormat("0.############E0");
     protected static final char ZERO_SYMBOL = '0';
     protected static final int DISPLAY_CAPACITY = 16;
     protected double memory;
     protected StringBuilder display;
     protected boolean displaySet;
+    
+    public static String FormatNumber(double number) {
+        if(number > 9999999999999999.0 || number < -9999999999999999.0 || (number > -0.00000000000001 && number < 0.00000000000001)) {
+            return ScientificNumberFormat.format(number);
+        }
+        return NumberFormat.format(number);
+    }
     
     public NumberStorage() {
         display = new StringBuilder(DISPLAY_CAPACITY);
@@ -25,19 +33,21 @@ public class NumberStorage {
     //@return false if backspace failed because number was set by calculator recently
     public boolean Backspace() {
         if(!displaySet) {
-            display.deleteCharAt(display.length() - 1);
+            if(display.length() > 0) {
+                display.deleteCharAt(display.length() - 1); 
+            }
             return true;
         }
         return false;
     }
     
     //CE - clears only the recent entry
-    public void ClearEntry() {
+    public final void ClearEntry() {
         display.delete(0, display.length());
     }
     
     //MC - clears the memory (sets it to zero)
-    public void MemoryClear() {
+    public final void MemoryClear() {
         memory = 0;
     }
     
@@ -45,7 +55,7 @@ public class NumberStorage {
     public void MemoryRecall() {
         ClearEntry();
         if(HasValueInMemory()) {
-            display.append(NumberFormat.format(memory));    
+            display.append(FormatNumber(memory));    
         }
     }
     
@@ -78,7 +88,7 @@ public class NumberStorage {
     public void SetDisplay(String value) {
         ClearEntry();
         try {
-            display.append(NumberFormat.format(Double.parseDouble(value)));
+            display.append(FormatNumber(Double.parseDouble(value)));
         } catch(NumberFormatException e) { //then it's an error message
             display.append(value);
         }

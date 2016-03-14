@@ -90,7 +90,7 @@ public class MathExpression {
 
     protected void BuildUnaryExpression(int idx, StringBuilder sb) {
         if (idx >= unaryOps.size()) {
-            sb.append(NumberStorage.NumberFormat.format(value));
+            sb.append(NumberStorage.FormatNumber(value));
             return;
         }
         MathProcessor.UnaryOperatorType op = unaryOps.get(idx);

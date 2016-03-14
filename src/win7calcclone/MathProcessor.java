@@ -48,14 +48,14 @@ public class MathProcessor {
             if (unaryLock) {
                 MathExpression me = expressions.get(expressions.size() - 1);
                 me.unaryOps.add(type);
-                return NumberStorage.NumberFormat.format(me.GetValue());
+                return NumberStorage.FormatNumber(me.GetValue());
             } else if (arithmeticLock) {
                 expressions.add(new MathExpression(value, type));
                 unaryLock = true;
-                return NumberStorage.NumberFormat.format(expressions.get(expressions.size() - 1).GetValue());
+                return NumberStorage.FormatNumber(expressions.get(expressions.size() - 1).GetValue());
             } else {
                 MathExpression me = new MathExpression(value, type);
-                return NumberStorage.NumberFormat.format(me.GetValue());
+                return NumberStorage.FormatNumber(me.GetValue());
             }
         } catch (IllegalArgumentException ex) {
             errorState = true;
@@ -143,6 +143,9 @@ public class MathProcessor {
                 arg1 /= arg2;
                 break;
         }
+        if(arg1 == Double.POSITIVE_INFINITY || arg1 == Double.NEGATIVE_INFINITY) {
+            throw new IllegalArgumentException("Overflow");
+        }
         return arg1;
     }
 
@@ -156,14 +159,19 @@ public class MathProcessor {
                 return ex.getMessage();
             }
         }
-        return NumberStorage.NumberFormat.format(result);
+        return NumberStorage.FormatNumber(result);
     }
 
     public String Calculate(double displayValue) {
         if(expressions.isEmpty()) {
-            return lastExp == null ? "0" : NumberStorage.NumberFormat.format(ProcessBinaryExpression(displayValue, lastExp.GetValue(), lastExp.GetBinaryOperator()));
+            try {
+                return lastExp == null ? "0" : NumberStorage.FormatNumber(ProcessBinaryExpression(displayValue, lastExp.GetValue(), lastExp.GetBinaryOperator()));
+            } catch (IllegalArgumentException ex) {
+                errorState = true;
+                return ex.getMessage();
+            }
         }
-        expressions.add(new MathExpression(displayValue, expressions.get(expressions.size() - 1).binaryOp));
+        expressions.add(CreateExpression(displayValue, expressions.get(expressions.size() - 1).binaryOp));
         String result = Precalculate();
         expressions.clear();
         return result;
