@@ -42,6 +42,10 @@ public class MathExpression {
     }
 
     public double GetValue() {
+        return GetValue(0);
+    }
+    
+    public double GetValue(double prevValue) {
         double result = value;
         for (int i = 0; i < unaryOps.size(); ++i) {
             MathProcessor.UnaryOperatorType op = unaryOps.get(i);
@@ -60,6 +64,9 @@ public class MathExpression {
                         throw new IllegalArgumentException("Invalid input");
                     }
                     result = Math.sqrt(result);
+                    break;
+                case Percent:
+                    result = prevValue * (result / 100.0);
                     break;
             }
         }
@@ -94,9 +101,13 @@ public class MathExpression {
             return;
         }
         MathProcessor.UnaryOperatorType op = unaryOps.get(idx);
-        sb.append(op.toString());
-        sb.append("(");
+        if(op != MathProcessor.UnaryOperatorType.Percent) {
+            sb.append(op.toString());
+            sb.append("(");
+        }
         BuildUnaryExpression(idx + 1, sb);
-        sb.append(")");
+        if(op != MathProcessor.UnaryOperatorType.Percent) {
+            sb.append(")");
+        }
     }
 }

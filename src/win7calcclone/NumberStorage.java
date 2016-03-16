@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class NumberStorage {
     private static final DecimalFormat NumberFormat = new DecimalFormat("###############.###############");//"0.###############"
-    private static final DecimalFormat ScientificNumberFormat = new DecimalFormat("0.############E0");
+    private static final DecimalFormat ScientificNumberFormat = new DecimalFormat("0.###########E0");
     protected static final char ZERO_SYMBOL = '0';
     protected static final int DISPLAY_CAPACITY = 16;
     protected double memory;
@@ -13,7 +13,8 @@ public class NumberStorage {
     
     public static String FormatNumber(double number) {
         if(number > 9999999999999999.0 || number < -9999999999999999.0 || (number > -0.00000000000001 && number < 0.00000000000001)) {
-            return ScientificNumberFormat.format(number);
+            String s = ScientificNumberFormat.format(number);
+            return s.equals("0E0") ? "0" : s;
         }
         return NumberFormat.format(number);
     }

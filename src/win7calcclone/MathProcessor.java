@@ -8,7 +8,8 @@ public class MathProcessor {
         Undefined,
         Negate,
         Sqrt,
-        Reciproc
+        Reciproc,
+        Percent
     }
 
     public enum BinaryOperatorType {
@@ -21,9 +22,9 @@ public class MathProcessor {
     }
 
     protected ArrayList<MathExpression> expressions;
+    protected MathExpression lastExp;
     protected boolean arithmeticLock;//If arithmetic operation used recently - block it until user will do something else. (Also, let user change an arithmetic operator)
     protected boolean unaryLock;
-    protected MathExpression lastExp;
     protected boolean errorState;
     
     public MathProcessor() {
@@ -118,7 +119,13 @@ public class MathProcessor {
     }
 
     //%
-    public String Percent() {
+    public String Percent(double argument) {
+//        MathExpression me = expressions.get(expressions.size() - 1);
+//        if(me.GetBinaryOperator() == BinaryOperatorType.Undefined) {
+//            me.value = me.value * (argument / 100.0);
+//        }
+//        CreateExpression(Ex, BinaryOperatorType.Undefined);
+        //return ProcessUnaryOperation(value, UnaryOperatorType.Percent);
         return Precalculate();
     }
 
@@ -177,10 +184,17 @@ public class MathProcessor {
         return result;
     }
 
+    private static final int ExpressionCharLimit = 26;
+    
     public String GetExpression() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < expressions.size(); ++i) {
             sb.append(expressions.get(i).toString());
+        }
+        String s = sb.toString();
+        int len = s.length();
+        if(len > ExpressionCharLimit) {
+            return "<<" + s.substring(len - ExpressionCharLimit + 2);
         }
         return sb.toString();
     }

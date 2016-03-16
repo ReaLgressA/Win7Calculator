@@ -304,15 +304,15 @@ public class MainWindow extends javax.swing.JFrame {
         jPanelCalc.setBackground(new java.awt.Color(240, 248, 255));
         jPanelCalc.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabelExpression.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
+        jLabelExpression.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         jLabelExpression.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabelExpression.setText("12345_____12345_____12345_____ ");
+        jLabelExpression.setText("12345_____12345_____12345___");
         jLabelExpression.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jLabelExpression.setMaximumSize(new java.awt.Dimension(45, 15));
         jLabelExpression.setMinimumSize(new java.awt.Dimension(45, 15));
         jLabelExpression.setPreferredSize(new java.awt.Dimension(45, 15));
 
-        jLabelNumber.setFont(new java.awt.Font("Arial", 0, 22)); // NOI18N
+        jLabelNumber.setFont(new java.awt.Font("Monospaced", 0, 22)); // NOI18N
         jLabelNumber.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelNumber.setText("3072");
         jLabelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -1115,7 +1115,7 @@ public class MainWindow extends javax.swing.JFrame {
         if(ErrorCheck()) {
             return;
         }
-        numStorage.SetDisplay(mathProc.Percent());
+        numStorage.SetDisplay(mathProc.Percent(numStorage.GetNumber()));
         UpdateDisplay();
     }//GEN-LAST:event_jButtonPercentActionPerformed
 
