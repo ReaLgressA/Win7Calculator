@@ -7,12 +7,16 @@ package win7calcclone;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import win7calcclone.MathProcessor.UnaryOperatorType;
 
 /**
  *
@@ -234,6 +238,33 @@ public class MainWindow extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 jButtonBackspaceActionPerformed(ae);
+            }
+        });
+        inputMap = jButtonPercent.getInputMap(JButton.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_percent = KeyStroke.getKeyStroke('%');
+        inputMap.put(key_percent, "Percent");
+        jButtonPercent.getActionMap().put("Percent", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                jButtonPercentActionPerformed(ae);
+            }
+        });
+        inputMap = jPanelCalc.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
+        KeyStroke key_ctrl_c = KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK);
+        KeyStroke key_ctrl_v = KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK);
+        inputMap.put(key_ctrl_c, "Ctrl+C");
+        inputMap.put(key_ctrl_v, "Ctrl+V");
+        jPanelCalc.getActionMap().put("Ctrl+C", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                numStorage.StoreNumberInClipboard();
+            }
+        });
+        jPanelCalc.getActionMap().put("Ctrl+V", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                numStorage.RestoreNumberFromClipboard();
+                UpdateDisplay();
             }
         });
     }
@@ -1021,6 +1052,12 @@ public class MainWindow extends javax.swing.JFrame {
         if(ErrorCheck()) {
             return;
         }
+        if(!mathProc.expressions.isEmpty()) {
+            MathExpression me = mathProc.expressions.get(mathProc.expressions.size() - 1);
+            if(me.binaryOp == MathProcessor.BinaryOperatorType.Undefined) {
+                mathProc.expressions.remove(mathProc.expressions.size() - 1);
+            }
+        }
         numStorage.MemoryRecall();
         UpdateDisplay();
     }//GEN-LAST:event_jButtonMRActionPerformed
@@ -1093,12 +1130,28 @@ public class MainWindow extends javax.swing.JFrame {
         if(ErrorCheck()) {
             return;
         }
-        numStorage.SetDisplay(mathProc.Negate(numStorage.GetNumber()));
+        if(numStorage.displaySet /*|| mathProc.ExpressionsCount() > 0*/) {
+            String result = mathProc.Negate(numStorage.GetNumber());
+            if(result.compareTo("-0") == 0) {
+                result = "0";
+            }
+            numStorage.SetDisplay(result);
+        } else {
+            MathExpression me = new MathExpression(numStorage.GetNumber(), UnaryOperatorType.Negate);
+            if(numStorage.display.length() == 0) {
+                numStorage.SetDisplay(mathProc.Negate(numStorage.GetNumber()));
+            } else if(numStorage.display.charAt(0) == '0' && numStorage.display.length() == 1) {
+                
+            } else if(numStorage.display.charAt(0) == '-') {
+                numStorage.display.deleteCharAt(0);
+            } else {
+                numStorage.display.insert(0, '-');
+            }
+        }
         UpdateDisplay();
     }//GEN-LAST:event_jButtonInvertSignActionPerformed
 
     private void jButtonSquareRootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSquareRootActionPerformed
-        
         numStorage.SetDisplay(mathProc.Sqrt(numStorage.GetNumber()));
         UpdateDisplay();
     }//GEN-LAST:event_jButtonSquareRootActionPerformed

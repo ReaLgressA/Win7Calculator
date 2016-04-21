@@ -5,8 +5,9 @@ public class Calc {
     private MathProcessor mathProc;
     
     public Calc() {
-        numStorage = new NumberStorage();
         mathProc = new MathProcessor();
+        numStorage = new NumberStorage(mathProc);
+        mathProc.SetStorage(numStorage);
         MainWindow w = new MainWindow(numStorage, mathProc);
         w.setVisible(true); 
     }

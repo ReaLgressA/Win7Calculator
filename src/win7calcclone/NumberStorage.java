@@ -1,33 +1,88 @@
 package win7calcclone;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
-public class NumberStorage {
-    private static final DecimalFormat NumberFormat = new DecimalFormat("###############.###############");//"0.###############"
-    private static final DecimalFormat ScientificNumberFormat = new DecimalFormat("0.###########E0");
+/*
+Bugs:
+Ввод числа, перемена знака - редактирование невозможно
+Потеря точности при вводе чисел (Ввод дробного числа, перемена знака, продолжение редактирования)
+5*5 reciproc рассинхрон с калькулятором
+*/
+
+public class NumberStorage implements ClipboardOwner {
+    protected static final DecimalFormat NumberFormat = new DecimalFormat("################.################");//"0.###############"
+    protected static final DecimalFormat ScientificNumberFormat = new DecimalFormat("0.############E0");
     protected static final char ZERO_SYMBOL = '0';
-    protected static final int DISPLAY_CAPACITY = 16;
+    protected static final int DISPLAY_CAPACITY = 15;
     protected double memory;
     protected StringBuilder display;
     protected boolean displaySet;
-    
+    protected MathProcessor mathProc;
+    private Clipboard clipboard;
     public static String FormatNumber(double number) {
-        if(number > 9999999999999999.0 || number < -9999999999999999.0 || (number > -0.00000000000001 && number < 0.00000000000001)) {
+        if(number != 0 && (number > 999999999999999.0 || number < -999999999999999.0 || (number > -0.0000000000001 && number < 0.0000000000001))) {
             String s = ScientificNumberFormat.format(number);
             return s.equals("0E0") ? "0" : s;
         }
         return NumberFormat.format(number);
     }
     
-    public NumberStorage() {
+    public NumberStorage(MathProcessor mathProc) {
+        this.mathProc = mathProc;
         display = new StringBuilder(DISPLAY_CAPACITY);
         displaySet = false;
         MemoryClear();
         ClearEntry();
+        clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    }
+    
+   
+   public void lostOwnership(Clipboard aClipboard, Transferable aContents){
+    /**
+     * Empty implementation of the ClipboardOwner interface.
+     */
+   }
+    
+    public void RestoreNumberFromClipboard() {
+        Transferable contents =  clipboard.getContents(null);
+        boolean hasText = contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
+        if(hasText) {
+            try {
+                String str = (String)contents.getTransferData(DataFlavor.stringFlavor);
+                double num = Double.parseDouble(str);
+                display.delete(0, display.length());
+                display.append(FormatNumber(num));
+            } catch(UnsupportedFlavorException | IOException | NumberFormatException | NullPointerException ex) {
+                ex.printStackTrace();
+                return;
+            }
+        }
+    }
+    
+    public void StoreNumberInClipboard() {
+        StringSelection ss = new StringSelection(display.toString());
+        try {
+            clipboard.setContents(ss, this);
+        } catch (IllegalStateException ex) {
+            ex.printStackTrace();
+            return;
+        }
     }
     
     public boolean HasValueInMemory() {
         return memory != 0;
+    }
+    
+    public void UnsetDisplay() {
+        displaySet = false;
     }
     
     //The left arrow - clears only last entered symbol.
@@ -35,7 +90,10 @@ public class NumberStorage {
     public boolean Backspace() {
         if(!displaySet) {
             if(display.length() > 0) {
-                display.deleteCharAt(display.length() - 1); 
+                display.deleteCharAt(display.length() - 1);
+                if(display.toString().compareTo("-0") == 0) {
+                    display.deleteCharAt(0);
+                }
             }
             return true;
         }
@@ -63,6 +121,8 @@ public class NumberStorage {
     //S stores the number on the display into memory.
     public void MemoryStore() {
         memory = GetNumber();
+        ClearEntry();
+        display.append(FormatNumber(memory));
     }
     
     //M+ adds the number on the display to the number in memory
@@ -99,6 +159,13 @@ public class NumberStorage {
     public void AddSymbol(char symbol) {
         if(displaySet) {
             ClearEntry();
+            if(!mathProc.expressions.isEmpty()) {
+                int lastIdx = mathProc.expressions.size() - 1;
+                MathExpression ex = mathProc.expressions.get(lastIdx);
+                if(ex.binaryOp == MathProcessor.BinaryOperatorType.Undefined) {
+                    mathProc.expressions.remove(lastIdx);
+                }
+            }
             displaySet = false;
         }
         if(display.length() == DISPLAY_CAPACITY) {
@@ -107,8 +174,8 @@ public class NumberStorage {
         else if(symbol == '.') {
             AddPoint();
         } else if(Character.isDigit(symbol)) {
-            if(symbol == ZERO_SYMBOL && display.length() == 0) {
-               return; //Only trailing zeros allowed 
+            if(display.length() == 1 && display.charAt(0) == ZERO_SYMBOL) {
+                display.deleteCharAt(0);
             }
             display.append(symbol);
         }
